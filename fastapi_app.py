@@ -40,14 +40,26 @@ def load_model():
     except Exception as e:
         print(f"--- Error loading model: {e} ---")
 
-@app.get("/")
-async def root():
-    return {"status": "online", "device": DEVICE, "model": "Chatterbox-Turbo"}
+# Determine the base directory for cloned voices (relative to this file)
+CLONED_VOICES_BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cloned_voices")
+
+@app.get("/voices")
+async def list_voices():
+    """Lists available cloned voices organized by gender."""
+    voices = {"Man": [], "Woman": []}
+    for gender in ["Man", "Woman"]:
+        gender_path = os.path.join(CLONED_VOICES_BASE, gender)
+        if os.path.exists(gender_path):
+            files = os.listdir(gender_path)
+            voices[gender] = [f.replace(".wav", "") for f in files if f.endswith(".wav")]
+    return voices
 
 @app.post("/generate")
 async def generate_tts(
     text: str = Form(..., description="The text to synthesize into speech."),
     audio_prompt: Optional[UploadFile] = File(None, description="Optional 10s reference audio file for voice cloning."),
+    voice_name: Optional[str] = Form(None, description="Name of the cloned voice to use (from /voices)."),
+    gender: Optional[str] = Form(None, description="Gender of the cloned voice ('Man' or 'Woman')."),
     temperature: float = Form(0.8, description="Sampling temperature. Higher means more creative/random."),
     seed: int = Form(0, description="Random seed for reproducibility. 0 for random."),
     top_p: float = Form(0.95, description="Top-p sampling parameter."),
@@ -63,16 +75,31 @@ async def generate_tts(
         set_seed(seed)
         
         audio_prompt_path = None
+        
+        # 1. Check if an audio file was uploaded (highest priority)
         if audio_prompt:
-            # Create a temporary file for the audio prompt
             temp_path = f"temp_{random.randint(1000, 9999)}_{audio_prompt.filename}"
             with open(temp_path, "wb") as f:
                 content = await audio_prompt.read()
                 f.write(content)
             audio_prompt_path = temp_path
+            
+        # 2. If no file uploaded, check for voice_name and gender
+        elif voice_name and gender:
+            # Handle case sensitivity for gender
+            gender_dir = gender.capitalize() # Converts 'man' to 'Man', 'woman' to 'Woman'
+            voice_file = f"{voice_name}.wav"
+            potential_path = os.path.join(CLONED_VOICES_BASE, gender_dir, voice_file)
+            
+            if os.path.exists(potential_path):
+                audio_prompt_path = potential_path
+            else:
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"Voice '{voice_name}' not found for gender '{gender_dir}' in {CLONED_VOICES_BASE}"
+                )
 
         # Generate audio using the model
-        # Note: model.generate returns a torch tensor (1, NumSamples)
         wav = model.generate(
             text,
             audio_prompt_path=audio_prompt_path,

@@ -4,15 +4,22 @@ const FormData = require('form-data');
 
 /**
  * Chatterbox API ile ses dosyası oluşturma örneği
+ * 
+ * @param {string} text - Sentezlenecek metin
+ * @param {string} voiceName - Sesin ismi (Örn: 'Achird', 'Aoede')
+ * @param {string} gender - Cinsiyet ('Man' veya 'Woman')
+ * @param {string} outputPath - Çıktı dosyası yolu
  */
-async function generateSpeech(text, outputPath = 'output.wav') {
-    const url = 'http://YOUR_SERVER_IP:8000/generate'; // Dokploy IP'nizi buraya yazın
+async function generateSpeech(text, voiceName = 'Achird', gender = 'Man', outputPath = 'output.wav') {
+    const url = 'http://localhost:8000/generate'; // API URL
 
     const form = new FormData();
     form.append('text', text);
+    form.append('voice_name', voiceName);
+    form.append('gender', gender);
     form.append('temperature', '0.8');
-    // Eğer kendi sesinizi klonlamak isterseniz:
-    // form.append('audio_prompt', fs.createReadStream('referans_ses.wav'));
+
+    // Not: Tüm sesleri listelemek için GET /voices endpointini kullanabilirsiniz.
 
     try {
         console.log('Ses oluşturuluyor...');

@@ -1,0 +1,122 @@
+{
+  "supported_languages": {
+    "count": 23,
+    "list": {
+      "ar": "Arabic",
+      "da": "Danish",
+      "de": "German",
+      "el": "Greek",
+      "en": "English",
+      "es": "Spanish",
+      "fi": "Finnish",
+      "fr": "French",
+      "he": "Hebrew",
+      "hi": "Hindi",
+      "it": "Italian",
+      "ja": "Japanese",
+      "ko": "Korean",
+      "ms": "Malay",
+      "nl": "Dutch",
+      "no": "Norwegian",
+      "pl": "Polish",
+      "pt": "Portuguese",
+      "ru": "Russian",
+      "sv": "Swedish",
+      "sw": "Swahili",
+      "tr": "Turkish",
+      "zh": "Chinese"
+    }
+  },
+  "voice_profiles": {
+    "type": "Zero-Shot Voice Cloning",
+    "description": "Herhangi bir referans ses (audio_prompt) kullanarak ses klonlama yapabilirsiniz. Aşağıda her dil için varsayılan olarak tanımlanmış referans ses profilleri bulunmaktadır.",
+    "default_profiles": {
+      "ar": "Female Profile (ar_f)",
+      "da": "Male Profile 1 (da_m1)",
+      "de": "Female Profile 1 (de_f1)",
+      "el": "Male Profile (el_m)",
+      "en": "Female Profile 1 (en_f1)",
+      "es": "Female Profile 1 (es_f1)",
+      "fi": "Male Profile (fi_m)",
+      "fr": "Female Profile 1 (fr_f1)",
+      "he": "Male Profile 1 (he_m1)",
+      "hi": "Female Profile 1 (hi_f1)",
+      "it": "Male Profile 1 (it_m1)",
+      "ja": "Preset Profile 1 (ja_prompts1)",
+      "ko": "Female Profile (ko_f)",
+      "ms": "Female Profile (ms_f)",
+      "nl": "Male Profile (nl_m)",
+      "no": "Female Profile 1 (no_f1)",
+      "pl": "Male Profile (pl_m)",
+      "pt": "Male Profile 1 (pt_m1)",
+      "ru": "Male Profile (ru_m)",
+      "sv": "Female Profile (sv_f)",
+      "sw": "Male Profile (sw_m)",
+      "tr": "Male Profile (tr_m)",
+      "zh": "Female Profile 2 (zh_f2)"
+    }
+  },
+  "generation_settings": {
+    "text": {
+      "description": "Sentezlenecek metin.",
+      "max_length": 300
+    },
+    "audio_prompt": {
+      "description": "Ses klonlama için 5-10 saniyelik referans ses dosyası (opsiyonel).",
+      "type": "file or URL"
+    },
+    "temperature": {
+      "description": "Yaratıcılık ve çeşitlilik seviyesi. Daha yüksek değerler daha değişken tonlar üretir.",
+      "default": 0.8,
+      "range": "0.05 - 5.0"
+    },
+    "top_p": {
+      "description": "Kelime seçimi için olasılık eşiği.",
+      "default": 0.95,
+      "range": "0.0 - 1.0"
+    },
+    "top_k": {
+      "description": "Seçilecek en olası kelime sayısı.",
+      "default": 1000,
+      "range": "0 - 1000"
+    },
+    "repetition_penalty": {
+      "description": "Aynı ses tonlarının veya kelimelerin tekrarını önleme cezası.",
+      "default": 1.2,
+      "range": "1.0 - 2.0"
+    },
+    "exaggeration": {
+      "description": "Duygu yoğunluğu ve vurgu seviyesi.",
+      "default": 0.5,
+      "range": "0.25 - 2.0"
+    },
+    "cfg_weight": {
+      "description": "Metne sadakat ve konuşma hızı dengesi.",
+      "default": 0.5,
+      "range": "0.2 - 1.0"
+    },
+    "norm_loudness": {
+      "description": "Çıkış ses seviyesini normalize eder (-27 LUFS).",
+      "default": true
+    },
+    "min_p": {
+      "description": "Yeni nesil örnekleyici eşiği. Yüksek temperature değerlerinde daha stabil sonuç verir.",
+      "default": 0.05,
+      "range": "0.0 - 1.0"
+    }
+  },
+  "emotional_tags": {
+    "description": "Metin içine yerleştirilebilen özel ses efektleri.",
+    "list": [
+      "[clear throat]",
+      "[sigh]",
+      "[shush]",
+      "[cough]",
+      "[groan]",
+      "[sniff]",
+      "[gasp]",
+      "[chuckle]",
+      "[laugh]"
+    ]
+  }
+}
