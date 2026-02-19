@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  chatterbox-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    restart: always
+    # Uncomment below if you have a GPU and NVIDIA Container Toolkit installed
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
