@@ -30,4 +30,4 @@ RUN pip install -e .
 EXPOSE 8000
 
 # Run the application
-CMD ["python", "fastapi_app.py"]
+CMD ["python", "multilingual_app.py"]
